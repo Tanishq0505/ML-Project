@@ -1,4 +1,9 @@
 pandas
-numpy 
+numpy
 seaborn
--e .
+matplotlib
+scikit-learn
+catboost
+xgboost
+Flask
+# -e . # it is a local package used for testing
