@@ -1,16 +1,62 @@
+import os
 import sys
 
-def error_message_detail(error, error_detail: sys):
-    _, _, exc_tb = error_detail.exc_info()
-    file_name = exc_tb.tb_frame.f_code.co_filename
-    error_message = f"Error occurred in script: [{file_name}] at line number: [{exc_tb.tb_lineno}] error message: [{str(error)}]"
-    file_name,exc_tb.tb_lineno,str(error)
-    return error_message
+import numpy as np 
+import pandas as pd
+import dill # it is used to serialize and deserialize the python objects 
+import pickle
+from sklearn.metrics import r2_score
+from sklearn.model_selection import GridSearchCV
 
-class CustomException(Exception):
-    def __init__(self, error_message, error_detail: sys):
-        super().__init__(error_message)
-        self.error_message = error_message_detail(error_message, error_detail=error_detail)
+from src.exception import CustomException
 
-    def __str__(self):
-        return self.error_message    
+def save_object(file_path, obj): # it is used to save the object in the specified path
+    try:
+        dir_path = os.path.dirname(file_path) # it is used to get the directory path of the file
+
+        os.makedirs(dir_path, exist_ok=True) # it is used to create the directory if it does not exist
+
+        with open(file_path, "wb") as file_obj: # it is used to open the file in write binary mode
+            pickle.dump(obj, file_obj) # it is used to dump the object in the file
+
+    except Exception as e:
+        raise CustomException(e, sys)
+    
+def evaluate_models(X_train, y_train,X_test,y_test,models,param):
+    try:
+        report = {}
+
+        for i in range(len(list(models))):
+            model = list(models.values())[i]
+            para=param[list(models.keys())[i]]
+
+            gs = GridSearchCV(model,para,cv=3)
+            gs.fit(X_train,y_train)
+
+            model.set_params(**gs.best_params_)
+            model.fit(X_train,y_train)
+
+            #model.fit(X_train, y_train)  # Train model
+
+            y_train_pred = model.predict(X_train)
+
+            y_test_pred = model.predict(X_test)
+
+            train_model_score = r2_score(y_train, y_train_pred)
+
+            test_model_score = r2_score(y_test, y_test_pred)
+
+            report[list(models.keys())[i]] = test_model_score
+
+        return report
+
+    except Exception as e:
+        raise CustomException(e, sys)
+    
+def load_object(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return pickle.load(file_obj)
+
+    except Exception as e:
+        raise CustomException(e, sys)

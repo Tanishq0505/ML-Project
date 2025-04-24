@@ -7,8 +7,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass # it is used to create classes that are mainly used to store data and have little functionality.
 
-# from src.components.data_transformation import DataTransformation
-# from src.components.data_transformation import DataTransformationConfig
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 # from src.components.model_trainer import ModelTrainerConfig
 # from src.components.model_trainer import ModelTrainer
@@ -64,8 +64,8 @@ if __name__=="__main__":
     train_data,test_data=obj.initiate_data_ingestion() # This line calls the initiate_data_ingestion method to 
     # start the data ingestion process.
 
-    # data_transformation=DataTransformation()
-    # train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
+    data_transformation=DataTransformation()
+    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
 
     # modeltrainer=ModelTrainer()
     # print(modeltrainer.initiate_model_trainer(train_arr,test_arr))
