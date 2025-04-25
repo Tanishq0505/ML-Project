@@ -102,10 +102,11 @@ class DataTransformation:# it is used to create a class for data transformation
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df) # it is used to fit the preprocessor object on the training dataframe and transform the training dataframe
             input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)# it is used to transform the testing dataframe using the preprocessor object fitted on the training dataframe
 
-            train_arr = np.c_[  
+            train_arr = np.c_[   # it is used to concatenate the input features and target features of the training dataframe into a single array
+                # np.c_ is used to concatenate the two arrays column-wise 
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
-            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)] # it is used to concatenate the input features and target features of the testing dataframe into a single array
 
             logging.info(f"Saved preprocessing object.")
 

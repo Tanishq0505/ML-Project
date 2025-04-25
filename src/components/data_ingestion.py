@@ -10,8 +10,8 @@ from dataclasses import dataclass # it is used to create classes that are mainly
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
 
-# from src.components.model_trainer import ModelTrainerConfig
-# from src.components.model_trainer import ModelTrainer
+from src.components.model_trainers import ModelTrainerConfig
+from src.components.model_trainers import ModelTrainer
 @dataclass
 class DataIngestionConfig: 
     train_data_path: str=os.path.join('artifacts',"train.csv")
@@ -64,10 +64,13 @@ if __name__=="__main__":
     train_data,test_data=obj.initiate_data_ingestion() # This line calls the initiate_data_ingestion method to 
     # start the data ingestion process.
 
-    data_transformation=DataTransformation()
-    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
+    data_transformation=DataTransformation() # This line creates an instance of the DataTransformation class.
+    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data) # This line calls 
+    # the initiate_data_transformation method to start the data transformation process.
 
-    # modeltrainer=ModelTrainer()
-    # print(modeltrainer.initiate_model_trainer(train_arr,test_arr))
+    modeltrainer=ModelTrainer() # This line creates an instance of the ModelTrainer class.
+    print(modeltrainer.initiate_model_trainer(train_arr,test_arr))
+    # This line calls the initiate_model_trainer method to start the model training process.
+    # It prints the report of the model training process.
 
 
